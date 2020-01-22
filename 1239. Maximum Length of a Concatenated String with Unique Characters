@@ -1,0 +1,41 @@
+class Solution {
+    int gm = Integer.MIN_VALUE;
+    public int maxLength(List<String> arr) {
+        
+        
+        backTrack(arr,"", 0);
+        
+        return gm;
+        
+    }
+    
+    public void backTrack(List<String> arr, String s, int index) {
+        
+        if(!isUnique(s)) {
+            
+            return;
+        } 
+        gm = Math.max(gm,s.length());
+        
+        for(int i=index;i<arr.size();i++) {
+            
+            backTrack(arr, s + arr.get(i), i+1);
+            
+        }
+        
+    }
+    
+    public boolean isUnique(String s) {
+        
+        HashSet<Character> hs = new HashSet<>();
+        
+        for(int i=0;i<s.length();i++) {
+            
+            if(hs.contains(s.charAt(i)))
+                return false;
+            hs.add(s.charAt(i));
+        }
+        
+        return true;  
+    }
+}
