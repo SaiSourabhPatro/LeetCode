@@ -1,0 +1,26 @@
+class Solution {
+    
+    int gm = 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+        
+        if(root == null)
+            return 0;
+        findDepth(root);
+        
+        return gm;    
+    }
+    
+    public int findDepth(TreeNode root) {
+        
+        if(root == null)
+            return 0;
+        
+        int le = findDepth(root.left);
+        int ri = findDepth(root.right);
+       
+        gm=Math.max(gm,le+ri);
+        
+        return 1+Math.max(le,ri);
+        
+    }
+}
