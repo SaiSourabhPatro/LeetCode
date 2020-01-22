@@ -1,0 +1,111 @@
+class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        
+        List<List<String>> res = new ArrayList<>();
+        
+        HashMap<String,List<String>> neighborNodes = new HashMap<>();
+        HashMap<String,Integer> distance = new HashMap<>();
+        
+        HashSet<String> dict = new HashSet<>(wordList);
+        dict.add(beginWord);
+        
+        bfs(beginWord, endWord, neighborNodes, distance, dict);
+        dfs(beginWord, endWord, neighborNodes, distance, dict, res, new ArrayList<String>());
+        
+        return res;
+        
+    }
+    
+    public void bfs(String start, String end, HashMap<String,List<String>> neighborNodes, HashMap<String,Integer> distance, HashSet<String> dict) {
+        
+        for(String s : dict) {
+            
+            neighborNodes.put(s,new ArrayList<String>());
+        }
+        
+        distance.put(start, 0);
+        Queue<String> q = new LinkedList<>();
+        
+        q.add(start);
+        
+        while(!q.isEmpty()) {
+            
+            int sz = q.size();
+            boolean foundEnd = false;
+            
+            
+            for(int i=0;i<sz;i++) {
+                
+                String word = q.poll();
+                
+                int currDistance = distance.get(word);
+                
+                List<String> neighbor = findNeighbor(word, dict);
+                
+                for(String ne : neighbor) {
+                    
+                    neighborNodes.get(word).add(ne);
+                    
+                    if(!distance.containsKey(ne)){
+                        
+                        distance.put(ne,currDistance+1);
+                        if(!end.equals(ne))
+                            q.offer(ne);
+                        else
+                            foundEnd = true;
+                        
+                    }
+                }          
+            }
+             if (foundEnd)
+                    break;
+            
+        }
+        
+    }
+    
+    public List<String> findNeighbor(String word, HashSet<String> dict) {
+        
+        List<String> neigh = new ArrayList<>();
+        char[] nodes = word.toCharArray();
+        
+        for(char c='a';c<='z';c++){
+            
+            for(int i=0;i<word.length();i++){
+                
+                if(c == nodes[i]) continue;
+                
+                char ch = nodes[i];
+                nodes[i] = c;
+                
+                if(dict.contains(String.valueOf(nodes))){
+                    neigh.add(String.valueOf(nodes));
+                }
+                
+                nodes[i] = ch;
+            }
+        }
+        return neigh;
+    }
+    
+    public void dfs(String cur, String end, HashMap<String,List<String>> neighborNodes, HashMap<String,Integer> distance, HashSet<String> dict, List<List<String>> res, ArrayList<String> sol) {
+        
+        sol.add(cur);
+        if(cur.equals(end)){
+            
+            res.add(new ArrayList<String>(sol));
+        } else {
+            
+            for(String nex : neighborNodes.get(cur)){
+                
+                if(distance.get(nex) == distance.get(cur)+1)
+                {
+                    dfs(nex, end, neighborNodes,distance,dict,res,sol);
+                }
+            }
+            
+        }
+        sol.remove(sol.size()-1);
+    }
+    
+}
