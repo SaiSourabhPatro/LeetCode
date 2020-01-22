@@ -1,0 +1,90 @@
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        
+        if(root == null)
+            return "";
+        StringBuilder sb = new StringBuilder();
+        
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()) {
+            
+            int sz = q.size();
+            for(int i=0;i<sz;i++) {
+                
+                TreeNode temp = q.poll();
+                
+                if(temp != null) {
+                    sb.append(temp.val);
+                    q.add(temp.left);
+                    q.add(temp.right);
+                } 
+                else {
+                    sb.append("N"); 
+                }
+				sb.append(" "); 
+            }
+        }
+        int ind = sb.length()-1;
+        while(!Character.isDigit(sb.charAt(ind))) 
+        {
+            sb.deleteCharAt(ind);
+            ind--;
+        }
+        return sb.toString();
+        
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        
+        if(data.length() == 0) {
+            return null;
+        }
+        String[] dat = data.split(" ");
+        TreeNode ref = new TreeNode(Integer.valueOf(dat[0]));
+        
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(ref);
+        
+        for(int i=0;i<dat.length; i++) {
+            
+            TreeNode root = q.poll();
+          
+            int li = (2*i)+1;
+            int ri = li+1;
+            
+            if(li >= dat.length && ri >= dat.length)
+                break;
+            else {
+                
+                if( li < dat.length)
+                {
+                    if(dat[li].equals("N")) {
+                        root.left = null;
+                    } else {
+                        root.left = new TreeNode(Integer.valueOf(dat[li]));
+                        q.add(root.left);
+                    }
+                    
+                }
+                if( ri < dat.length)
+                {
+                    if(dat[ri].equals("N")) {
+                        root.right = null;
+                    } else {
+                        root.right = new TreeNode(Integer.valueOf(dat[ri]));
+                        q.add(root.right);
+                    }
+                    
+                }
+                    
+            }
+            
+        }
+        
+        return ref;
+    }
+}
