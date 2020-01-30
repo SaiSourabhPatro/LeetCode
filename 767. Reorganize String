@@ -1,0 +1,39 @@
+class Solution {
+    public String reorganizeString(String S) {
+        
+        int[] arr = new int[26];
+        
+        for(char c : S.toCharArray()){
+            
+            arr[c-'a']++;
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        
+        int in=0;
+        while(sb.length() < S.length()) {
+            
+            for(int i=0;i<26;i++) {
+                
+                if(arr[i]>0 && arr[i]-1 <= (S.length()-arr[i])) {
+                    char z = (char)(i+97);
+                    if(sb.length() > 0 && z == sb.charAt(sb.length()-1)){
+                        
+                        if(sb.charAt(in) == z && sb.charAt(in+1) !=z)
+                            in = in+2;
+                        else if(sb.charAt(in) == z && sb.charAt(in+1) == z)
+                            in = in+3;
+                       sb.insert(in,(char)(i+97));
+                        in=in+2;
+                    }
+                        
+                    else
+                        sb.append((char)(i+97));
+                    arr[i]--;
+                } else if(arr[i] > 0)
+                    return "";
+            }
+        }
+        return sb.toString();
+    }
+}
