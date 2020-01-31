@@ -1,0 +1,27 @@
+class Solution {
+    public Node connect(Node root) {
+        
+        if(root == null)
+            return root;
+        
+        Deque<Node> dq = new LinkedList<>();
+        dq.add(root);
+        while(!dq.isEmpty()) {
+            
+            int sz = dq.size();
+            Node prev = null;
+            for(int i=sz-1;i>=0;i--){
+                
+                Node x = dq.pollLast();
+                x.next = prev;
+                prev = x;
+                if(x.right!=null)
+                    dq.addFirst(x.right);
+                if(x.left!=null)
+                    dq.addFirst(x.left);
+                
+            }
+        }
+        return root; 
+    }
+}
