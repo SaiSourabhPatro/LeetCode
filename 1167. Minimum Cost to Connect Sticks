@@ -1,0 +1,22 @@
+class Solution {
+    public int connectSticks(int[] sticks) {
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        
+       for(int x : sticks)
+           pq.offer(x);   
+        
+        int res = 0;
+        
+        while(pq.size() > 1) {
+            
+            int v = pq.poll() + pq.poll();
+            res += v;
+            pq.offer(v);
+        }
+        
+        return res;
+        
+        
+    }
+}
