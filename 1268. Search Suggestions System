@@ -1,0 +1,71 @@
+class TrieNode {
+    
+    TrieNode[] children = new TrieNode[26];
+    PriorityQueue<String> pq = new PriorityQueue<>((a,b) ->  b.compareTo(a));
+    
+    TrieNode() {       
+        for(int i=0;i<26;i++) {
+            
+            children[i] = null;   
+        }
+    }
+}
+
+class Solution {
+    
+    TrieNode root = new TrieNode();
+    
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        
+        List<List<String>> result = new ArrayList<>();
+        
+        TrieNode crawl = root;
+        
+        for(String s: products) {
+            
+            insert(s);
+        }
+        for(int i=0;i<searchWord.length();i++) {
+            
+            int index = searchWord.charAt(i) - 'a';
+            
+            if(crawl.children[index] !=null) {
+                
+                 crawl = crawl.children[index];
+                List<String> inres = new ArrayList<>(crawl.pq);
+                Collections.sort(inres);
+                result.add(inres);
+                
+            } else {
+                
+                result.add(new ArrayList<String>());
+                break;
+            }   
+        }
+        while(result.size() < searchWord.length())
+             result.add(new ArrayList<String>());
+        
+        return result;
+    }
+    
+    public void insert(String word) {
+        
+        TrieNode crawl = root;
+        
+        for(int i=0;i<word.length();i++) {
+            
+            int index = word.charAt(i) - 'a';
+            
+            if(crawl.children[index] == null) {
+                
+                crawl.children[index] = new TrieNode();
+                
+            }
+            crawl = crawl.children[index];
+            crawl.pq.add(word);
+            if(crawl.pq.size() > 3)
+                crawl.pq.poll();
+            
+        }
+    }
+}
