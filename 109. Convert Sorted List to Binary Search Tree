@@ -1,0 +1,36 @@
+class Solution {
+    
+   ListNode dummy = new ListNode(0);
+    public TreeNode sortedListToBST(ListNode head) {
+        
+       dummy.next = head;
+        
+        ListNode sp = dummy;
+        ListNode fp = dummy;
+        
+        while(fp.next !=null && fp.next.next != null) {
+                
+            sp =sp.next;
+            fp = fp.next.next;
+        }
+        
+        if(sp.next!=null) {
+            
+            ListNode temp = sp.next;
+            sp.next = null;
+			
+            TreeNode root = new TreeNode(temp.val);
+            
+            if(temp != head)
+                root.left = sortedListToBST(head);
+            
+            if(temp.next !=null)
+                root.right = sortedListToBST(temp.next);
+            
+            return root; 
+            
+        }
+      return null;
+        
+    }
+}
