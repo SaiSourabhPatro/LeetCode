@@ -1,0 +1,54 @@
+class MedianFinder {
+
+    /** initialize your data structure here. */
+    
+    List<Integer> al;
+ 
+    public MedianFinder() {
+        al = new ArrayList<Integer>();
+    }
+    
+    public void addNum(int num) {
+        if(al.size() == 0)
+            al.add(num);
+        else
+            findIndex(0,al.size(),num);
+        
+    }
+    
+    public double findMedian() {
+        
+        int n = al.size();
+        if(n%2 !=0)
+            return al.get(n/2);
+        else {
+            double y = al.get(n/2) + al.get((n/2)-1);
+            return y/2;
+        }
+    }
+    
+    public void findIndex(int start, int end, int num) {
+        
+        int mid = (start+end)/2;
+        
+        if(start >= end || num == al.get(mid) ) {
+            
+            al.add(mid,num);
+        }
+        
+        else if(num < al.get(mid)) {
+                findIndex(start,mid,num);
+        } 
+        else if( num > al.get(mid)) {
+            
+            findIndex(mid+1,end,num);
+        }
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
