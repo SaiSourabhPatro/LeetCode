@@ -1,0 +1,17 @@
+class Traversal
+{
+    static void dfs(int src, ArrayList<ArrayList<Integer>> list, boolean vis[])
+    {
+       // add your code here
+       System.out.print(src+" ");
+       vis[src] = true;
+       
+       for(int num : list.get(src)) {
+           
+           if(!vis[num]) {
+               vis[num] = true;
+               dfs(num,list,vis);
+           }
+       }
+    }
+}
