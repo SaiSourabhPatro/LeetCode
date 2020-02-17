@@ -10,36 +10,28 @@
 class Solution {
     
     List<Integer> al = new ArrayList<>();
-    HashSet<TreeNode> hs = new HashSet<>();
     public List<Integer> boundaryOfBinaryTree(TreeNode root) {
      
         if(root == null)
             return al;
         
-        if(root.left!=null)
-            findleft(root);
-        else {
-            al.add(root.val);
-            hs.add(root);
-        }
-            
+        al.add(root.val);
         
-        findleaves(root);
-        
-        if(root.right!=null)
-            findright(root);
+        findleft(root.left);
+       
+        findleaves(root.left);
+        findleaves(root.right);
+    
+        findright(root.right);
         
         return al;
     }
     public void findleft(TreeNode root) {
         
-        if(root == null)
+        if(root == null || (root.left == null && root.right == null))
             return;
-        
-        if(!hs.contains(root)) {
-            al.add(root.val);
-            hs.add(root);
-        }
+    
+        al.add(root.val);
         
         if(root.left!=null)
             findleft(root.left);
@@ -49,7 +41,7 @@ class Solution {
     
     public void findright(TreeNode root) {
         
-        if(root == null)
+        if(root == null || (root.left == null && root.right == null))
             return;
         
         if(root.right!=null)
@@ -57,10 +49,7 @@ class Solution {
         else if(root.left!=null)
             findright(root.left);
         
-          if(!hs.contains(root)) {
             al.add(root.val);
-            hs.add(root);
-        }
     }
     
     public void findleaves(TreeNode root) {
@@ -68,10 +57,8 @@ class Solution {
         if(root == null)
             return;
         if(root.left == null && root.right == null) {
-              if(!hs.contains(root)) {
-                al.add(root.val);
-                hs.add(root);
-        }
+             
+            al.add(root.val);   
             return;
         }
         findleaves(root.left);
