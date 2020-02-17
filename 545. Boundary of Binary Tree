@@ -1,0 +1,80 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+    List<Integer> al = new ArrayList<>();
+    HashSet<TreeNode> hs = new HashSet<>();
+    public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+     
+        if(root == null)
+            return al;
+        
+        if(root.left!=null)
+            findleft(root);
+        else {
+            al.add(root.val);
+            hs.add(root);
+        }
+            
+        
+        findleaves(root);
+        
+        if(root.right!=null)
+            findright(root);
+        
+        return al;
+    }
+    public void findleft(TreeNode root) {
+        
+        if(root == null)
+            return;
+        
+        if(!hs.contains(root)) {
+            al.add(root.val);
+            hs.add(root);
+        }
+        
+        if(root.left!=null)
+            findleft(root.left);
+        else if(root.right!=null)
+            findleft(root.right);  
+    }
+    
+    public void findright(TreeNode root) {
+        
+        if(root == null)
+            return;
+        
+        if(root.right!=null)
+            findright(root.right);
+        else if(root.left!=null)
+            findright(root.left);
+        
+          if(!hs.contains(root)) {
+            al.add(root.val);
+            hs.add(root);
+        }
+    }
+    
+    public void findleaves(TreeNode root) {
+        
+        if(root == null)
+            return;
+        if(root.left == null && root.right == null) {
+              if(!hs.contains(root)) {
+                al.add(root.val);
+                hs.add(root);
+        }
+            return;
+        }
+        findleaves(root.left);
+        findleaves(root.right);
+    }
+}
