@@ -1,0 +1,61 @@
+class TimeMap {
+
+    /** Initialize your data structure here. */
+    
+    HashMap<String, List<Pair<Integer,String>>> hm;
+    public TimeMap() {
+        
+        hm = new HashMap<>();
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        
+        if(!hm.containsKey(key)) {
+            
+            hm.put(key,new ArrayList<Pair<Integer,String>>());
+        }
+        hm.get(key).add(new Pair(timestamp,value));
+    }
+    
+    public String get(String key, int timestamp) {
+        
+        List<Pair<Integer,String>> ls = hm.get(key);
+        
+        int i=0, j=ls.size()-1;
+        
+        String s = "";
+        
+        if(i == j) {
+            
+            return ls.get(i).getValue();
+        }
+        
+        while(i <= j) {
+            
+            
+            if(i == j) {
+                
+                if(ls.get(i).getKey() <= timestamp)
+                    s = ls.get(i).getValue();
+                break;
+            }
+            int mid = (i+j)/2;
+            
+            if(ls.get(mid).getKey() <= timestamp && ls.get(mid+1).getKey() > timestamp) {
+                
+                s = ls.get(mid).getValue();
+                break;
+                
+            } else if(ls.get(mid).getKey() < timestamp) {
+                
+                i = mid+1;
+                
+            } else if(ls.get(mid).getKey() > timestamp) {
+                
+                j= mid-1;
+            }  
+        }
+        return s;
+            
+    }
+}
