@@ -1,0 +1,82 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+    HashMap<TreeNode,TreeNode> hm;
+    
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        
+        hm = new HashMap<>();
+        
+        dfs(root, null);
+        
+        Queue<TreeNode> q = new LinkedList<>();
+        HashSet<TreeNode> seen = new HashSet<>();
+        
+        q.add(null);
+        q.add(target);
+        
+        seen.add(target);
+        seen.add(null);
+        
+        int dist = 0;
+        
+        while(!q.isEmpty()) {
+            
+            TreeNode temp = q.poll();
+            
+            if(temp == null) {
+                
+                if(dist == K) {
+                    List<Integer> ls = new ArrayList<>();
+                    for(TreeNode n: q)
+                        ls.add(n.val);
+                    return ls;
+                    
+                }
+                q.offer(null);
+                dist++;
+            } else {
+                
+                if(!seen.contains(temp.left)) {
+                    
+                    seen.add(temp.left);
+                    q.add(temp.left);
+                }
+                if(!seen.contains(temp.right)) {
+                    
+                    seen.add(temp.right);
+                    q.add(temp.right);
+                }
+                TreeNode p = hm.get(temp);
+                
+                if(!seen.contains(p)) {
+                    
+                    seen.add(p);
+                    q.add(p);
+                }
+                
+            }
+            
+        }
+    return new ArrayList<Integer>();
+        
+    }
+    
+    public void dfs(TreeNode root, TreeNode par) {
+        
+        if(root != null) {
+            
+            hm.put(root, par);
+            dfs(root.left, root);
+            dfs(root.right, root);
+        }
+    }
+}
