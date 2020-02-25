@@ -1,0 +1,33 @@
+class Solution {
+    public int minDominoRotations(int[] A, int[] B) {
+        
+        int[] a = new int[7];
+        int[] b = new int[7];
+        int[] comp = new int[7];
+        
+        int min = Integer.MAX_VALUE;
+        
+        for(int i=1;i<=A.length;i++) {
+            
+            if(A[i-1] == B[i-1]) {
+                
+                comp[A[i-1]]++;
+            }
+            a[A[i-1]]++;
+            b[B[i-1]]++;
+        }
+        
+        int x = 0;
+        for(int i=1;i<=7;i++) {
+            
+        
+            x = Math.min(a[i-1],b[i-1]) - comp[i-1];
+            if(x + Math.max(a[i-1],b[i-1]) >= A.length )
+                min = Math.min(x,min);
+            
+        }
+        
+        return min != Integer.MAX_VALUE ? min : -1;
+        
+    }
+}
