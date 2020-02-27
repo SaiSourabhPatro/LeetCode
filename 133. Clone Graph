@@ -1,0 +1,28 @@
+class Solution {
+    public Node cloneGraph(Node node) {
+        
+        if(node == null)
+            return node;
+        HashMap<Integer,Node> hm = new HashMap<>();
+        Node x = new Node(1);
+        hm.put(1,x);
+        DFS(node,hm,x);
+    
+        return x;
+    }
+    
+    public void DFS(Node node, HashMap<Integer,Node> hm, Node x) {
+        
+        for(Node v : node.neighbors) {
+            
+            if(hm.containsKey(v.val)) {
+                 x.neighbors.add(hm.get(v.val));
+            } else {
+                Node c = new Node(v.val);
+                hm.put(v.val,c);
+                x.neighbors.add(c);
+                DFS(v,hm,c);
+            }
+        }
+    }
+}
