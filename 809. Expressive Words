@@ -1,0 +1,55 @@
+class Solution {
+    public int expressiveWords(String S, String[] words) {
+        
+        int result = 0;
+        List<Integer> al = new ArrayList<>();
+        if(S.length() > 0)
+            store(S,al);
+       
+        for(String w : words) {
+            
+            List<Integer> wl = new ArrayList<>();
+            if(w.length() > 0)
+                store(w,wl);
+            
+            if(wl.size() != al.size())
+                continue;
+            
+            boolean flag = true;
+            
+            for(int i=0;i<al.size()-1;i++) {
+                
+                int idx1 = al.get(i);
+                int idx2 = wl.get(i);
+                int idx3 = al.get(i+1);
+                int idx4 = wl.get(i+1);
+                
+                if((S.charAt(idx1) != w.charAt(idx2))  || (idx3-idx1 < idx4-idx2)  || ( idx3-idx1 > idx4-idx2 && idx3-idx1 < 3)) {
+                    flag = false;
+                    break;
+                }    
+            }
+            if(flag)
+                result+=1;
+        }
+        return result;
+    }
+    
+    public void store(String S, List<Integer> al) {
+        
+         int i =1;
+        al.add(0);
+        char prev = S.charAt(0);
+        while(i < S.length()) {
+            
+            while(i<S.length() && S.charAt(i) == prev) {
+                i++;
+            }
+            if(i<S.length()) {
+                prev = S.charAt(i);
+                al.add(i);
+            }   
+        }
+        al.add(S.length());   
+    }
+}
