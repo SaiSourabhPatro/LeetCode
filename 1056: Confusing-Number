@@ -1,0 +1,28 @@
+class Solution {
+    public boolean confusingNumber(int N) {
+        
+            int[] arr = new int[10];
+            Arrays.fill(arr, -1);
+        
+            arr[0] = 0;
+            arr[1] = 1;
+            arr[6] = 9;
+            arr[8] = 8;
+            arr[9] = 6;
+        
+        int fr = 0;
+        int i=0;
+        int x = N;
+        while(x!=0) {
+            
+            if(arr[x%10] == -1)
+                return false;
+            
+            fr = (fr*10)+(arr[x%10]);
+            x=x/10;
+        
+        }
+        
+        return fr != N;
+    }
+}
