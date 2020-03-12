@@ -1,0 +1,62 @@
+class Solution {
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        
+        TreeNode[] arr = new TreeNode[1001];
+        boolean[] del = new boolean[1001];
+        arr[root.val] = root;
+        
+        for(int v : to_delete) {
+            
+            del[v] = true;
+        }
+        
+        traverse(root, del, arr, root,"");
+        
+        List<TreeNode> res = new ArrayList<>();
+        
+        for(int i=1;i<=1000;i++) {
+            
+            if(arr[i] !=null) {
+            
+                res.add(arr[i]);
+            }
+        }
+        
+        return res;
+        
+    }
+    
+    public void traverse(TreeNode root, boolean[] del, TreeNode[] arr, TreeNode p,String c) {
+        
+        if(root == null)
+            return;
+        
+        TreeNode r = root;
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        
+        if(del[root.val]) {
+            
+            if(root.left != null) {
+                arr[root.left.val] = root.left;
+            }
+                
+            if(root.right != null) {
+                
+                 arr[root.right.val] = root.right;
+            }
+            
+            arr[root.val] = null;
+            if(root.val != p.val) {
+                
+                if(c == "l")
+                    p.left = null;
+                else
+                    p.right = null;
+            }
+        }
+        
+        traverse(left,del,arr,r,"l");
+        traverse(right,del,arr,r,"r");
+    }
+}
