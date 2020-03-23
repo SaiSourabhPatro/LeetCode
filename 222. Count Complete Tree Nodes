@@ -1,0 +1,34 @@
+class Solution {
+    public int countNodes(TreeNode root) {
+        
+      
+        int left = traverseLeft(root);
+        int right = traverseRight(root);
+        
+        if(left == right)
+            return (1 << left) -1;
+        else 
+            return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+    
+    public int traverseLeft(TreeNode root) {
+        
+        int dep = 0;
+        
+        while(root !=null) {
+            root = root.left;
+            dep++;
+        }
+        return dep;
+    }
+     public int traverseRight(TreeNode root) {
+        
+        int dep = 0;
+        
+        while(root !=null) {
+            root = root.right;
+            dep++;
+        }
+        return dep;
+    }
+}
