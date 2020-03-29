@@ -1,0 +1,32 @@
+class UndergroundSystem {
+        
+    HashMap<Integer,Pair<String,Integer>> hm;
+    HashMap<String, HashMap<String,Pair<Integer,Integer>>> ans;
+    public UndergroundSystem() {
+        hm = new HashMap<>();
+        ans = new HashMap<>();
+    }
+    
+    public void checkIn(int id, String stationName, int t) {
+        
+        hm.put(id,new Pair(stationName, t));
+    }
+    
+    public void checkOut(int id, String stationName, int t) {
+        
+       String ins = hm.get(id).getKey();
+       int inv = hm.get(id).getValue();
+        HashMap<String,Pair<Integer,Integer>> temp = ans.getOrDefault(ins, new HashMap<String,Pair<Integer,Integer>>());
+        Pair<Integer,Integer> vp= temp.getOrDefault(stationName, new Pair(0,0));
+        temp.put(stationName, new Pair(vp.getKey()+(t-inv),vp.getValue()+1));
+        ans.put(ins,temp);
+    }
+    
+    public double getAverageTime(String startStation, String endStation) {
+        HashMap<String,Pair<Integer,Integer>> temp = ans.get(startStation);
+        Pair<Integer,Integer> vp = temp.get(endStation);
+       double dl = (vp.getKey()/(double)vp.getValue());
+       return dl;  
+    
+    }
+}
