@@ -1,0 +1,31 @@
+class Solution {
+    public Node flatten(Node head) {
+        
+        if(head == null)
+            return head;
+        Node temp = head;
+        flat(temp);
+        return head;
+    }
+    
+    public Node flat(Node temp) {
+        
+        while(temp.next != null || temp.child !=null) {
+            
+            if(temp.child == null) {
+                temp = temp.next;
+            } else {
+                
+                Node t = flat(temp.child);
+                if(temp.next != null) {
+                    temp.next.prev = t;
+                    t.next = temp.next;
+                }
+                temp.next = temp.child;    
+                temp.child.prev = temp;
+                temp.child = null;
+            }
+        }
+        return temp;
+    }
+}
