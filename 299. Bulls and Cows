@@ -1,0 +1,26 @@
+class Solution {
+    public String getHint(String secret, String guess) {
+	
+        HashMap<Character,Integer> hm = new HashMap<>();
+        int a=0,b=0;
+        for(int i=0;i<secret.length();i++) {
+            
+            if(secret.charAt(i) == guess.charAt(i)) {
+                a++;
+            } else {
+                hm.put(secret.charAt(i), hm.getOrDefault(secret.charAt(i),0)+1);
+            }
+        }
+        for(int i=0;i<guess.length();i++) {
+            
+            if(guess.charAt(i) != secret.charAt(i)) {
+                
+                if(hm.containsKey(guess.charAt(i)) && hm.get(guess.charAt(i)) > 0 ) {
+                    b += 1;
+                    hm.put(guess.charAt(i), hm.get(guess.charAt(i))-1);
+                }
+            }
+        }
+        return a+"A"+b+"B";
+    }
+}
