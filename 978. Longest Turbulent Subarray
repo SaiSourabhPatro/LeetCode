@@ -1,0 +1,45 @@
+class Solution {
+    public int maxTurbulenceSize(int[] A) {
+        int maxi = 0;
+        
+        int g = 0, l = 0;
+        
+        char prev=' ';
+        for(int i=0;i<A.length-1;i++) {
+            
+            if(A[i] > A[i+1]) {
+                if(prev == 'G') {
+                    g = 1;
+                    l = 0;
+                }                    
+                else if(prev == 'L') {
+                    g++;
+                }               
+                 if(g == 0) {
+                    g++;
+                }
+                prev = 'G';
+            }
+            else if(A[i] < A[i+1]) {
+				  if(prev == 'L') {
+					l = 1;
+					g = 0;
+				} else if(prev == 'G') {
+					l++;
+				}               
+				if(l == 0) {
+					l++;
+				}
+				prev = 'L';
+            } 
+			else {
+                g=0;
+                l=0;
+            }
+            maxi = Math.max(l+g,maxi);
+        }
+        
+        return maxi+1;
+        
+    }
+}
