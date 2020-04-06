@@ -1,0 +1,34 @@
+class Solution {
+    public boolean twoSumBSTs(TreeNode root1, TreeNode root2, int target) {
+        
+        HashSet<Integer> hs = new HashSet<>();
+        traverse(root1,hs);
+        
+        return check(root2,hs, target);
+    }
+    
+    public void traverse(TreeNode root1, HashSet<Integer> hs) {
+        
+        if(root1 == null)
+            return;
+        
+        traverse(root1.left, hs);
+        hs.add(root1.val);
+        traverse(root1.right, hs);
+        
+    }
+    
+    public boolean check(TreeNode root2, HashSet<Integer> hs, int t) {
+        
+        if(root2 == null)
+            return false;
+        
+         if(hs.contains(t-(root2.val)))
+            return true;
+        
+        return check(root2.left,hs,t) || check(root2.right ,hs,t);
+       
+        
+    }
+    
+}
