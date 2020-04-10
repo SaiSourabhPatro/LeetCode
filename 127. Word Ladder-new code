@@ -1,0 +1,57 @@
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        
+        HashMap<String, List<String>> hm = new HashMap<>();
+        Queue<String> q = new LinkedList<>();
+        HashSet<String> vis = new HashSet<>();
+        int count = 0;
+        
+        for(String s: wordList) {
+            
+            for(int i=0;i<s.length();i++) {
+                
+                String x = s.substring(i) + "*" + s.substring(i+1,s.length());
+                
+                if(!hm.containsKey(x)) {
+                    hm.put(x, new ArrayList<String>());
+                }
+                hm.get(x).add(s);
+            }
+        }
+        
+        q.add(beginWord);
+        
+        while(!q.isEmpty()) {
+            
+            int sz = q.size();
+            for(int j=0;j<sz;j++) {
+                
+                  String s = q.poll();
+        
+            for(int i=0;i<s.length();i++) {
+                
+                String x = s.substring(i) + "*" + s.substring(i+1,s.length());          
+                
+                    if(hm.containsKey(x)) {
+                        for(String y: hm.get(x)) {
+
+                        if(y.equals(endWord))
+                            return count++;
+                        else {
+
+                            if(!vis.contains(y)) {
+                                q.add(y);
+                                vis.add(y);
+                            }
+                            }
+                        }
+                    }
+                }
+                
+            }
+            count++;
+        }
+        return 0;
+        
+    }
+}
