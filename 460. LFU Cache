@@ -1,0 +1,133 @@
+class DoubleLinkedList {
+    
+    int key = 0;
+    int value = 0;
+    int freq= 0;
+    DoubleLinkedList prev;
+    DoubleLinkedList next;
+    
+    public DoubleLinkedList(int val) {
+        
+        value = val;
+        prev = null;
+        next = null;
+    }
+
+}
+
+class LFUCache {
+        
+    HashMap<Integer, DoubleLinkedList> hmOne;
+    HashMap<Integer, Pair<DoubleLinkedList, DoubleLinkedList>> hmTwo;
+    int size, capacity;
+    int minValue = 1;
+    
+    public LFUCache(int capacity) {
+        
+        hmOne = new HashMap<>();
+        hmTwo = new HashMap<>();
+        size = 0;
+        this.capacity = capacity;
+    }
+    
+    public int get(int key) {
+        
+        
+        if(hmOne.containsKey(key)) {
+            DoubleLinkedList node = hmOne.get(key);
+            removeNode(node);
+            node.freq+=1;
+            addToHead(node, node.freq);
+            return hmOne.get(key).value;
+        }
+
+        return -1;
+    }
+    
+    public void put(int key, int value) {
+        
+        if(capacity !=0) {
+            if(!hmOne.containsKey(key)) {
+            
+                if(size == capacity) {
+
+                DoubleLinkedList head = hmTwo.get(minValue).getKey();
+                DoubleLinkedList tail = hmTwo.get(minValue).getValue();
+
+                DoubleLinkedList rm = popTail(tail);
+                hmOne.remove(rm.key); 
+
+                size--;
+            }
+            
+            DoubleLinkedList temp = new DoubleLinkedList(value);
+            temp.key = key;
+            temp.value = value;
+            temp.freq  = 1;
+            
+            hmOne.put(key, temp);         
+            addToHead(temp, 1);
+            minValue = 1;
+            size++;
+        } 
+        else {
+            
+            DoubleLinkedList temp = hmOne.get(key);
+            temp.value = value;
+            removeNode(temp);            
+            temp.freq +=1;
+            addToHead(temp, temp.freq);
+            
+            }
+        } 
+    }
+    
+
+    public void removeNode(DoubleLinkedList node) {
+        
+        DoubleLinkedList prev = node.prev;
+        DoubleLinkedList next = node.next;
+        
+            prev.next = next;
+            next.prev = prev;
+        
+      if(prev.prev == null && next.next == null) {
+            if(node.freq == minValue)
+                minValue +=1;
+        }
+            
+    }
+    public DoubleLinkedList popTail(DoubleLinkedList tail) {
+        
+        DoubleLinkedList res = tail.prev;
+        removeNode(res);
+        return res;
+    }
+    
+    public void addToHead (DoubleLinkedList dl, int freq) {
+            
+        
+            if(!hmTwo.containsKey(freq)) {
+                DoubleLinkedList head = new DoubleLinkedList(0);
+                DoubleLinkedList tail = new DoubleLinkedList(0);
+                head.next = tail;
+                tail.prev = head;
+                hmTwo.put(freq,new Pair(head,tail));
+            } 
+        
+            DoubleLinkedList head = hmTwo.get(freq).getKey();
+            head.next.prev = dl;
+            dl.next = head.next;
+            dl.prev = head;
+            head.next = dl;
+                     
+    }
+
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
