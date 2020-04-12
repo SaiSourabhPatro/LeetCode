@@ -1,0 +1,175 @@
+class TicTacToe {
+
+    /** Initialize your data structure here. */
+    
+    int[][] grid;
+    int size;
+    public TicTacToe(int n) {
+        
+        grid = new int[n][n];
+        size = n;
+    }
+    
+    /** Player {player} makes a move at ({row}, {col}).
+        @param row The row of the board.
+        @param col The column of the board.
+        @param player The player, can be either 1 or 2.
+        @return The current winning condition, can be either:
+                0: No one wins.
+                1: Player 1 wins.
+                2: Player 2 wins. */
+    public int move(int row, int col, int player) {
+        
+        grid[row][col] = player;
+        
+        int var1, var2, var3, var4, var5, var6, var7, var8;
+        
+        var1 = moveHorLeft(row,col-1,player);
+        var2 = moveHorRight(row,col+1,player);
+        var3 = moveVerUp(row-1,col,player);
+        var4 = moveVerDown(row+1,col,player);
+        var5 = moveDiaLUp(row-1,col-1,player);
+        var6 = moveDiaRDown(row+1,col+1,player);
+        var7 = moveDiaLDown(row+1,col-1,player);
+        var8 = moveDiaRUp(row-1,col+1,player);
+        
+        
+        
+        if((var1 + var2 == size-1) || (var3 + var4 == size-1) || (var5+var6 == size-1) || (var7+var8 == size-1))
+            return player;
+        else
+            return 0;
+    }
+    
+    public int moveVerUp(int row, int col, int player) {
+         int count = 0;      
+        while(row>=0) {
+            
+            if(grid[row][col] == player) {
+                row--;
+            } else {
+                
+                return 0;
+            }
+            count++;
+          
+        }
+        
+        return count;
+    }
+     public int moveVerDown(int row, int col, int player) {
+        int count = 0;           
+        while(row < size) {
+            
+            if(grid[row][col] == player) {
+                row++;
+            } else {
+                
+                return 0;
+            }
+            count++;
+        }
+        
+        return count;
+    }
+     public int moveHorLeft(int row, int col, int player) {
+        int count = 0;   
+        while(col>=0) {
+            
+            if(grid[row][col] == player) {
+                col--;
+            } else {
+                
+                return 0;
+            }
+            count++; 
+        }
+        
+        return count;
+    }
+     public int moveHorRight(int row, int col, int player) {
+        int count = 0;       
+        while(col < size) {
+            
+            if(grid[row][col] == player) {
+                col++;
+            } else {
+                
+                return 0;
+            }
+             count++;
+        }
+        
+        return count;
+    }
+     public int moveDiaLUp(int row, int col, int player) {
+        int count = 0;   
+        while(row>=0 && col >=0) {
+            
+            if(grid[row][col] == player) {
+                row--;
+                col--;
+            } else {
+                
+                return 0;
+            }
+             count++;
+        }
+        
+       return count;
+    }
+     public int moveDiaLDown(int row, int col, int player) {
+        int count = 0;          
+        while(row < size && col >=0 ) {
+            
+            if(grid[row][col] == player) {
+                row++;
+                col--;
+            } else {
+                
+                return 0;
+            }
+            count++;
+        }
+        
+        return count;
+    }
+     public int moveDiaRUp(int row, int col, int player) {
+         int count = 0;   
+        while(row>=0 && col < size) {
+            
+            if(grid[row][col] == player) {
+                row--;
+                col++;
+            } else {
+                
+                return 0;
+            }
+            count++;
+        }
+        
+        return count;
+    }
+     public int moveDiaRDown(int row, int col, int player) {
+         int count = 0;   
+        while(row< size && col < size) {
+            
+            if(grid[row][col] == player) {
+                row++;
+                col++;
+            } else {
+                
+                return 0;
+            }
+            count++;
+        }
+        
+        return count;
+    }  
+}
+
+/**
+ * Your TicTacToe object will be instantiated and called as such:
+ * TicTacToe obj = new TicTacToe(n);
+ * int param_1 = obj.move(row,col,player);
+ */
