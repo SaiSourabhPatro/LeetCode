@@ -1,0 +1,57 @@
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        
+        HashMap<String, String> emailToName = new HashMap<>();
+        HashMap<String, HashSet<String>> hm = new HashMap<>();
+        
+        for(List<String> account : accounts) {
+            
+            String name = account.get(0);
+            
+            for(int i=1;i<account.size();i++) {
+                
+                if(!hm.containsKey(account.get(i))) {
+                    hm.put(account.get(i), new HashSet<String>());
+                }
+                emailToName.put(account.get(i), name);
+                
+                if(i == 1)
+                    continue;
+                
+                hm.get(account.get(i)).add(account.get(i-1));
+                hm.get(account.get(i-1)).add(account.get(i));
+            
+            }
+        }
+        
+        HashSet<String> seen = new HashSet<>();
+        List<List<String>> res = new ArrayList<>();
+        
+        for(String email : hm.keySet()) {
+            
+            List<String> inres = new ArrayList<>();
+            if(seen.add(email)) {
+                dfs(email, seen, hm, inres);
+                Collections.sort(inres);
+                inres.add(0,emailToName.get(email));
+                res.add(inres);
+               
+            }
+        }
+        
+        return res;
+        
+    }
+    
+    public void dfs(String email, HashSet<String> seen, HashMap<String, HashSet<String>> hm, List<String> inres ) {
+        inres.add(email);
+        
+        for(String next : hm.get(email)) {
+            
+            if(seen.add(next)) {
+                dfs(next, seen, hm, inres);
+            }
+        }
+        
+    }
+}
