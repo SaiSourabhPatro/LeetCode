@@ -1,0 +1,45 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        
+        TreeMap<Integer, PriorityQueue<TreeNode>> tm = new TreeMap<>();
+        HashMap<TreeNode, Integer> sy = new HashMap<>();
+        
+        traverse(root, tm, 0,0, sy);
+        
+        List<List<Integer>> res = new ArrayList<>();
+        
+        for(int key : tm.keySet()) {
+            
+            ArrayList<Integer> al = new ArrayList<>();
+            while(!tm.get(key).isEmpty()) {
+                
+                al.add(tm.get(key).poll().val);
+            }
+            res.add(al);
+            
+        }
+        
+        return res;
+    }
+    
+    public void traverse(TreeNode root, TreeMap<Integer, PriorityQueue<TreeNode>> tm, int x, int y, HashMap<TreeNode, Integer> sy) {
+        
+        if(root == null)
+            return;
+                
+        traverse(root.left, tm, x-1, y-1, sy);
+        sy.put(root, y);
+        tm.put(x, tm.getOrDefault(x, new PriorityQueue<TreeNode>((a,b) -> sy.get(a) != sy.get(b) ? sy.get(b) - sy.get(a) : a.val - b.val)));
+        tm.get(x).add(root);        
+        traverse(root.right, tm, x+1, y-1, sy);
+    }
+}
