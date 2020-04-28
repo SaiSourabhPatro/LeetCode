@@ -1,0 +1,18 @@
+class Solution {
+    public boolean canJump(int[] nums) {
+        
+        if(nums[0] == 0 && nums.length == 1)
+            return true;
+        
+        int presum = nums[0];
+        int i=0;
+        
+        while(presum >=i) {
+            presum = Math.max(presum, nums[i]+i);
+            if(presum >= nums.length-1)
+                return true;
+            i++;
+        }
+        return false;
+    }
+}
