@@ -1,0 +1,34 @@
+class Solution {
+    
+    int c=0;
+    public int pathSum(TreeNode root, int sum) {
+        
+        if(root == null)
+            return c;
+        HashMap<Integer,Integer> hm = new HashMap<>();
+        hm.put(0,1);
+        traverse(root, sum, hm, 0);
+       
+        return c;
+    }
+    
+    public void traverse(TreeNode root, int sum, HashMap<Integer,Integer> hm, int s) {
+        
+        
+        if(root == null)
+            return;
+       
+        s += root.val;
+
+        if(hm.containsKey(s-sum)) {
+           c+=hm.get(s-sum);
+       }
+        
+        hm.put(s,hm.getOrDefault(s,0)+1);
+        
+        traverse(root.left, sum, hm, s);        
+        traverse(root.right, sum, hm, s);
+        
+        hm.put(s,hm.get(s)-1); 
+    }
+}
