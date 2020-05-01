@@ -1,0 +1,53 @@
+class Solution {
+    public int calculate(String s) {
+        
+        s=s.replaceAll(" ","");
+        Stack<Integer> st = new Stack<>();
+        
+        int i=0;
+        while(i<s.length()) {
+            
+            if(Character.isDigit(s.charAt(i))) {
+                String val="";
+                while(i<s.length() && Character.isDigit(s.charAt(i))) {
+                    val+=s.charAt(i);
+                    i++;
+                }
+                st.push(Integer.valueOf(val));
+            } else {
+                
+                String val="";
+                char op = s.charAt(i);
+                while(i<s.length()-1 && Character.isDigit(s.charAt(i+1))) {
+                    val+=s.charAt(i+1);
+                    i++;
+                }
+                
+                if(op == '-') {
+                    
+                    st.push(-Integer.valueOf(val));
+                   
+                } else if(op == '*') {
+                    st.push(st.pop()*Integer.valueOf(val));
+                   
+                    
+                } else if( op == '/') {
+                    st.push(st.pop()/Integer.valueOf(val));
+                  
+                } else {
+                    st.push(Integer.valueOf(val));
+                }
+                i++;
+            }
+            
+        }
+        
+        int res = 0;
+        
+        while(!st.isEmpty()) {
+            res+=st.pop();
+        }
+        
+        return res;
+    }
+}
