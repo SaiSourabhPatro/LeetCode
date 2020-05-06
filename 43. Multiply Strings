@@ -1,0 +1,98 @@
+class Solution {
+    public String multiply(String nums1, String nums2) {
+        
+        String res = "";
+        
+        if(nums1.length() == 0 || nums2.length() == 0)
+            return "";
+        if((nums1.length() == 1 && nums1.charAt(0) == '0') || (nums2.length() == 1 && nums2.charAt(0) == '0'))
+           return "0";
+        
+        for(int i=nums2.length()-1;i>=0;i--) {
+            
+            int n = nums2.charAt(i) - '0';
+            
+            if(n == 0)
+                continue;
+            
+            int eachSum = 0;
+            int carry = 0;
+            
+            StringBuilder sb = new StringBuilder();
+            for(int j= nums1.length()-1; j>=0; j--) {
+                
+                int n1 = nums1.charAt(j) - '0';
+                                
+                if(n1 == 0)
+                    eachSum += carry;
+                
+               sb.insert(0,((carry + (n * n1))%10));
+               carry = (carry + (n * n1))/10;
+                
+            }
+            if(carry > 0) {
+                sb.insert(0,carry);
+            }
+            
+            int count = nums2.length()-1-i;
+            while(count !=0) {
+                 sb.append(0);
+                 count--;
+            }
+
+            res = addString(res, sb.toString());
+                       
+        }
+        
+        return res.length() != 0 ? res : "0";
+    }
+    
+    public String addString(String a, String b) {
+        
+        StringBuilder result = new StringBuilder();
+        
+        int l1 = a.length()-1;
+        int l2 = b.length()-1;
+        
+        int carry = 0;
+        while(l1>=0 && l2>=0) {
+            
+            int  n1 = a.charAt(l1--) - '0';
+            int  n2 = b.charAt(l2--) - '0';
+            
+            result.insert(0, (carry+n1+n2)%10);
+            carry = (carry+n1+n2)/10;
+        }
+        
+        if(l1 >= 0) {
+            
+            while(carry != 0 || l1>=0) {
+                int n = 0;
+                
+                if(l1>=0)
+                    n = a.charAt(l1--) - '0';
+                result.insert(0,(carry+n)%10);
+                carry = (carry+n)/10;
+            }
+                
+            
+        }
+         if(l2 >= 0) {
+            
+            while(carry != 0 || l2>=0) {               
+             int n = 0;
+                
+                if(l2>=0)
+                    n = b.charAt(l2--) - '0';
+                result.insert(0,(carry+n)%10);
+                carry = (carry+n)/10;
+            }
+            
+        }
+        
+        if(carry > 0)
+            result.insert(0,carry);
+        return result.toString();
+     
+    }
+}
