@@ -1,0 +1,98 @@
+class ListNode {
+    
+    int time;
+    int count;
+    
+    ListNode prev;
+    ListNode next;
+    
+    public ListNode(int val, int key) {
+        
+        time = val;
+        count = key;
+        
+        prev = null;
+        next = null;
+        
+    }
+}
+class HitCounter {
+
+    /** Initialize your data structure here. */
+    
+    ListNode head = null, tail = null;
+    int res = 0;
+    public HitCounter() {
+        
+        head = new ListNode(0,0);
+        tail = new ListNode(0,0);
+        
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    /** Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public void hit(int timestamp) {
+        
+        if(head.next == tail) {
+            
+            ListNode temp = new ListNode(timestamp, 1);
+            head.next = temp;
+            temp.prev = head;
+            temp.next = tail;
+            tail.prev = temp;
+            res++;
+            
+        } else {
+                
+                int firstval = head.next.time;
+        
+                if(timestamp - firstval >= 300) {
+                    
+                 deletNodes(timestamp, firstval);
+                    
+                }   
+                ListNode temp = new ListNode(timestamp, 1);
+
+                tail.prev.next = temp;
+                temp.prev = tail.prev;
+                temp.next = tail;
+                tail.prev = temp;
+                
+                res++;
+                }
+        }
+    
+    /** Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public int getHits(int timestamp) {
+        
+        int firstval = head.next.time;           
+        
+         if(timestamp - firstval >= 300) {
+
+                deletNodes(timestamp, firstval);
+            }   
+        return res;
+    }
+    
+    public void deletNodes(int timestamp, int firstval) {
+        
+           int value = timestamp - 300;
+           
+            while(head.next!= tail && head.next.time <= value) {
+                ListNode tmp = head.next;
+                head.next = tmp.next;
+                tmp.next.prev = head; 
+                res--;
+            }      
+    }
+}
+
+/**
+ * Your HitCounter object will be instantiated and called as such:
+ * HitCounter obj = new HitCounter();
+ * obj.hit(timestamp);
+ * int param_2 = obj.getHits(timestamp);
+ */
