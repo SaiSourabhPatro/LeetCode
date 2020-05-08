@@ -1,0 +1,45 @@
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        
+        HashMap<Character, Integer> hm = new HashMap<>();
+        PriorityQueue<Character> pq = new PriorityQueue<>((a,b) -> hm.get(b) - hm.get(a));
+        
+        for(char c : tasks) {
+            
+            hm.put(c, hm.getOrDefault(c,0)+1);
+        }
+        
+        for(char c : hm.keySet()) {
+            
+            pq.add(c);
+        }
+        
+      int t=0;
+        
+        while(!pq.isEmpty()) {
+            
+            int i=0;        
+            List<Character> al = new ArrayList<>();
+            while(i < n+1) {
+                
+                if(!pq.isEmpty()) {
+                    
+                    char c = pq.poll();
+                    hm.put(c, hm.get(c)-1);
+                    
+                    if(hm.get(c) > 0)
+                        al.add(c);                     
+                }               
+                i++;
+                t++;
+                
+                if(pq.isEmpty() && al.size() == 0)
+                    break;
+            }
+            
+            for(char k : al) 
+                pq.add(k);
+        }
+        return t;
+    }
+}
