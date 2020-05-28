@@ -1,0 +1,45 @@
+class Solution {
+     public Node connect(Node root) {
+     
+    if(root == null )
+        return root;
+        
+    Node head = root;
+  
+    while(head!=null && ((head.left != null || head.right != null) || (head.next !=null))) {
+          Node temp = head; 
+          Node prev = null;
+       
+        while(temp!=null){
+            
+            if(temp.left == null && temp.right == null) {
+                temp = temp.next;
+            }
+             else {
+				   if(prev != null) {
+						if(temp.left != null)
+							prev.next = temp.left;
+						else if(temp.right != null)
+							prev.next = temp.right;
+                }
+                 if(temp.left!= null && temp.right != null) {
+                    temp.left.next = temp.right;
+                     prev = temp.right;
+                }
+               else if(temp.left!=null && temp.right == null)
+                    prev = temp.left;
+                else if(temp.left == null && temp.right !=null)
+                    prev = temp.right;
+                temp = temp.next;
+             } 
+        }
+        if(head.left !=null)
+            head = head.left;
+        else if(head.right != null)
+            head = head.right;
+        else if(head.next != null)
+            head = head.next;
+    }
+        return root;
+    }
+}
